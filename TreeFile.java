@@ -36,6 +36,7 @@ public class TreeFile {
              userInput = inScan.nextLine();
              //TODO: create a new node that has the existing tree as
              //its right child and assign it to the bTree variable
+             bTree = new BinaryNode<>(userInput.charAt(0), null, bTree);
              break;
          case 5:
             FileWriter fileWriter = new FileWriter(readFileName());
@@ -87,10 +88,15 @@ public class TreeFile {
      BinaryNode<Character> result = null;
      if(file.hasNext()){
        String line = file.nextLine();
-       if(line.charAt(0) == 'I'){ //internal node
-         /*TODO: replace null below with a new node and recursively call
+       if(line.charAt(0) == 'I')
+       { //internal node
+          /*TODO: replace null below with a new node and recursively call
           readTree on its left and right children */
-         result = null;
+          char data = line.charAt(2);
+          BinaryNode<Character> lChild = readTree(file);
+          BinaryNode<Character> rChild = readTree(file);
+          result = new BinaryNode<>(data, lChild, rChild);
+          result = null;
        } else if(line.charAt(0) == 'L'){ //leaf node
          result = new BinaryNode<>(line.charAt(2));
        } else { //NULL child
@@ -104,6 +110,7 @@ public class TreeFile {
      if(root != null){
        if(root.left == null && root.right == null){ //leaf: write L
          //TODO: write ("L " + root.data) to the file and return
+         file.write("L " + root.data + "\n");
        } else { //internal: write I
          file.write("I " + root.data + "\n");
        }
